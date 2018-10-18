@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
         BtnLaws=(Button)findViewById(R.id.btnLaws);
         BtnMetoo=(Button)findViewById(R.id.btnMeToo);
         BtnMetooIndia=(Button)findViewById(R.id.btnMeTooIndia);
@@ -31,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         BtnMetoo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,Twitter.class);
+                intent.putExtra("Type","MeToo");
+                MainActivity.this.startActivity(intent);
 
             }
         });
@@ -38,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         BtnMetooIndia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,Twitter.class);
+                intent.putExtra("Type","MeTooIndia");
+                MainActivity.this.startActivity(intent);
 
             }
         });
