@@ -1,4 +1,4 @@
-package com.example.shauryatrivedi.metoo;
+package com.example.shauryatrivedi.metoo.Retrofit;
 
 import java.util.ArrayList;
 
@@ -15,15 +15,15 @@ ArrayList<data> data;
         this.pages = pages;
     }
 
-    public ArrayList<com.example.shauryatrivedi.metoo.data> getData() {
+    public ArrayList<com.example.shauryatrivedi.metoo.Retrofit.data> getData() {
         return data;
     }
 
-    public void setData(ArrayList<com.example.shauryatrivedi.metoo.data> data) {
+    public void setData(ArrayList<com.example.shauryatrivedi.metoo.Retrofit.data> data) {
         this.data = data;
     }
 
-    public TweetLis(String pages, ArrayList<com.example.shauryatrivedi.metoo.data> data) {
+    public TweetLis(String pages, ArrayList<com.example.shauryatrivedi.metoo.Retrofit.data> data) {
         this.pages = pages;
         this.data = data;
     }

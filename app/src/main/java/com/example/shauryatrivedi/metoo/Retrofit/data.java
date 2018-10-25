@@ -1,4 +1,4 @@
-package com.example.shauryatrivedi.metoo;
+package com.example.shauryatrivedi.metoo.Retrofit;
 
 public class data {
 
@@ -7,6 +7,7 @@ public class data {
     String created_at;
 
     public data(String screen_name, String tweet_text, String created_at) {
+
         this.screen_name = screen_name;
         this.tweet_text = tweet_text;
         this.created_at = created_at;
@@ -35,4 +36,6 @@ public class data {
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
+
+
 }
