@@ -29,6 +29,7 @@ public class Twitter extends AppCompatActivity {
 
         type = getIntent().getStringExtra("Type");
 
+        Getfeed();
     }
 
     private void Getfeed()
@@ -40,6 +41,7 @@ public class Twitter extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<data>> call, Response<List<data>> response) {
 
+                Toast.makeText(getApplicationContext(), "Retrofit Working", Toast.LENGTH_SHORT).show();
             }
 
             @Override

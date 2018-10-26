@@ -4,8 +4,13 @@ import java.util.ArrayList;
 
 public class MainPojo {
 
-    String page;
-    ArrayList<data> data;
+     String page;
+     ArrayList<data> Data;
+
+    public MainPojo(String page, ArrayList<data> data) {
+        this.page = page;
+        Data = data;
+    }
 
     public String getPage() {
         return page;
@@ -16,16 +21,10 @@ public class MainPojo {
     }
 
     public ArrayList<data> getData() {
-        return data;
+        return Data;
     }
 
     public void setData(ArrayList<data> data) {
-        this.data = data;
-    }
-
-    public MainPojo(String page, ArrayList<data> data) {
-
-        this.page = page;
-        this.data = data;
+        Data = data;
     }
 }
