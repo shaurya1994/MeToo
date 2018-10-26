@@ -17,12 +17,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-<<<<<<< HEAD
 
 
 
-=======
->>>>>>> 4fc830c8d5b678c5d0bf022123fd27bfa4c02108
         BtnLaws=(Button)findViewById(R.id.btnLaws);
         BtnMetoo=(Button)findViewById(R.id.btnMeToo);
         BtnMetooIndia=(Button)findViewById(R.id.btnMeTooIndia);

@@ -46,12 +46,12 @@ public class TweetRvAdapter extends BaseAdapter{
         TextView scrnam= (TextView)convertView.findViewById(R.id.screen_name);
         TextView twtext = (TextView)convertView.findViewById(R.id.tweet_text);
         com.example.shauryatrivedi.metoo.Retrofit.data info = data.get(position);
-        String created = info.getCreated_at();
         String screename = info.getScreen_name();
         String tweetxt = info.getTweet_text();
-        creat.setText(created);
+        String created = info.getCreated_at();
         scrnam.setText(screename);
         twtext.setText(tweetxt);
+        creat.setText(created);
         return convertView;
 
     }

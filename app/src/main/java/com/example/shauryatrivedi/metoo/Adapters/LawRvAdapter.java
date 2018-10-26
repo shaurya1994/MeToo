@@ -22,7 +22,8 @@ public class LawRvAdapter extends RecyclerView.Adapter<LawRvAdapter.Myviewholder
         ImageView imageViewicon;
         public Myviewholder(@NonNull View itemView) {
             super( itemView );
-            this.imageViewicon = itemView.findViewById(R.id.law_img);
+
+            imageViewicon =(ImageView) itemView.findViewById(R.id.law_img);
         }
     }
     public LawRvAdapter(Context context, List<TweetList> list) {
@@ -32,14 +33,16 @@ public class LawRvAdapter extends RecyclerView.Adapter<LawRvAdapter.Myviewholder
     @NonNull
     @Override
     public Myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.law_card ,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.law_card ,parent,false);
         Myviewholder myviewholder = new Myviewholder( view );
         return myviewholder;
     }
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
         ImageView imageview = myviewholder.imageViewicon;
-        String imageurl = TweetList.get(i).getImage();
+        com.example.shauryatrivedi.metoo.Retrofit.TweetList twee=TweetList.get(i);
+        String imageurl=twee.getImage();
+//        String imageurl = TweetList.get(i).getImage();
         try{
             Glide.with( context ).load(imageurl).into(imageview);
         }catch (IllegalArgumentException ex){
