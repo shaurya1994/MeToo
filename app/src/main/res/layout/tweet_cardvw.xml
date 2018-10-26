@@ -22,18 +22,21 @@
                 android:id="@+id/screen_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Screen Name"/>
+                android:layout_marginLeft="5dp"
+                android:text="Screen Name" />
 
             <TextView
                 android:id="@+id/tweet_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="Tweet Text"/>
 
             <TextView
                 android:id="@+id/created_on"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="created on"/>
 
         </LinearLayout>
