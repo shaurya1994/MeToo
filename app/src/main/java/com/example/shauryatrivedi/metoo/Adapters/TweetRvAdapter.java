@@ -42,14 +42,14 @@ public class TweetRvAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.tweet_cardvw,null);
-        TextView creat = (TextView)convertView.findViewById(R.id.created_on);
         TextView scrnam= (TextView)convertView.findViewById(R.id.screen_name);
         TextView twtext = (TextView)convertView.findViewById(R.id.tweet_text);
+        TextView creat = (TextView)convertView.findViewById(R.id.created_on);
         com.example.shauryatrivedi.metoo.Retrofit.data info = data.get(position);
         String screename = info.getScreen_name();
         String tweetxt = info.getTweet_text();
         String created = info.getCreated_at();
-        scrnam.setText(screename);
+        scrnam.setText("@"+screename);
         twtext.setText(tweetxt);
         creat.setText(created);
         return convertView;

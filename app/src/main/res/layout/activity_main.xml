@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity">
@@ -11,29 +13,36 @@
         android:id="@+id/btnLaws"
         android:layout_width="131dp"
         android:layout_height="74dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
+        android:layout_marginStart="212dp"
+        android:layout_marginLeft="212dp"
+        android:layout_marginTop="321dp"
         android:text="Laws"
-        android:textSize="30dp"/>
+        android:textSize="30dp" />
 
     <Button
         android:id="@+id/btnMeToo"
         android:layout_width="129dp"
         android:layout_height="66dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="219dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="214dp"
+        android:layout_marginRight="0dp"
         android:text="#MeToo"
-        android:textSize="20dp"/>
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/btnMeTooIndia"
         android:layout_width="wrap_content"
         android:layout_height="69dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="119dp"
+        android:layout_marginEnd="81dp"
+        android:layout_marginRight="81dp"
+        android:layout_marginBottom="63dp"
         android:text="#MeTooIndia"
         android:textSize="20dp" />
 </RelativeLayout>
