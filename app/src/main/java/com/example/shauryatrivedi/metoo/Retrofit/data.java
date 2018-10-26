@@ -2,9 +2,14 @@ package com.example.shauryatrivedi.metoo.Retrofit;
 
 public class data {
 
-    String screen_name;
-    String tweet_text;
-    String created_at;
+    String screen_name,tweet_text,created_at;
+
+    public data(String screen_name, String tweet_text, String created_at) {
+
+        this.screen_name = screen_name;
+        this.tweet_text = tweet_text;
+        this.created_at = created_at;
+    }
 
     public String getScreen_name() {
         return screen_name;
@@ -30,10 +35,5 @@ public class data {
         this.created_at = created_at;
     }
 
-    public data(String screen_name, String tweet_text, String created_at) {
 
-        this.screen_name = screen_name;
-        this.tweet_text = tweet_text;
-        this.created_at = created_at;
-    }
 }
