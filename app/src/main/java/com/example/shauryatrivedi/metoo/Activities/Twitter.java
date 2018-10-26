@@ -38,7 +38,7 @@ public class Twitter extends AppCompatActivity {
     private void Getfeed()
     {
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-        Call<MainPojo> calll=api.get_dat("Type","1");
+        Call<MainPojo> calll=api.get_dat(type,"1");
 
         calll.enqueue(new Callback<MainPojo>() {
             @Override
