@@ -2,9 +2,7 @@ package com.example.shauryatrivedi.metoo.Retrofit;
 
 public class data {
 
-    String screen_name;
-    String tweet_text;
-    String created_at;
+    String screen_name,tweet_text,created_at;
 
     public data(String screen_name, String tweet_text, String created_at) {
 
