@@ -25,9 +25,9 @@ public class LawRvAdapter extends RecyclerView.Adapter<LawRvAdapter.Myviewholder
             this.imageViewicon = itemView.findViewById(R.id.law_img);
         }
     }
-    public LawRvAdapter(Context context, List<TweetList> TweetList) {
+    public LawRvAdapter(Context context, List<TweetList> list) {
         this.context = context;
-        this.TweetList = TweetList;
+        this.TweetList = list;
     }
     @NonNull
     @Override
@@ -46,7 +46,6 @@ public class LawRvAdapter extends RecyclerView.Adapter<LawRvAdapter.Myviewholder
             Log.wtf("Glide-tag",String.valueOf(imageview.getTag()));}
 
         transfer = TweetList.get(i).getImage();
-
     }
     @Override
     public int getItemCount() {

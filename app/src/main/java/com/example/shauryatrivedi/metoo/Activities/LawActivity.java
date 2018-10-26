@@ -114,14 +114,14 @@ public class LawActivity extends AppCompatActivity {
 
                 lawList = response.body();
                 if (lawList != null){
-                    Log.d(TAG, "Number of Celeb received: " + lawList.size());
+                    Log.d(TAG, "Number of Images received: " + lawList.size());
 
                     LawRvAdapter newAdaptr = new LawRvAdapter(LawActivity.this,lawList);
                     recyclerView.setAdapter(newAdaptr);
                     recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
                         @Override
                         public void onClick(View view, int position) {
-//                            Intent int1 = new Intent(LawActivity.this,CelebPhotoActivity.class);
+//                            Intent int1 = new Intent(LawActivity.this,.class);
 //                            int1.putExtra("url", lawList.get(position).getImage());
 //                            startActivity(int1);
                         }

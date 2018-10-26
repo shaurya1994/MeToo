@@ -5,6 +5,13 @@ String id;
 String image;
 String thumb_image;
 
+    public TweetList(String id, String image, String thumb_image) {
+
+        this.id = id;
+        this.image = image;
+        this.thumb_image = thumb_image;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -29,10 +36,4 @@ String thumb_image;
         return thumb_image;
     }
 
-    public TweetList(String id, String image, String thumb_image) {
-
-        this.id = id;
-        this.image = image;
-        this.thumb_image = thumb_image;
-    }
 }

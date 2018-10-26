@@ -7,7 +7,7 @@ public class ApiClient {
 
 
         public static final String BASE_URL="http://mapi.trycatchtech.com/v1/twitter/";
-        private static Retrofit retrofit =null;
+        private static Retrofit retrofit = null;
 
         public static Retrofit getClient()
         {
