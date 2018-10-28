@@ -1,6 +1,7 @@
 package com.example.shauryatrivedi.metoo.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,9 @@ public class TweetRvAdapter extends BaseAdapter{
         TextView twtext = (TextView)convertView.findViewById(R.id.tweet_text);
         TextView creat = (TextView)convertView.findViewById(R.id.created_on);
         com.example.shauryatrivedi.metoo.Retrofit.data info = data.get(position);
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"fonts/tweet.ttf");
+        twtext.setTypeface(typeface);
+        scrnam.setTypeface(typeface);
         String screename = info.getScreen_name();
         String tweetxt = info.getTweet_text();
         String created = info.getCreated_at();

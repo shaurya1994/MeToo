@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MeToo</string>
+    <string name="message">It\'s Never too Late to Speak the TRUTH!</string>
+    <string name="meToo">#MeToo</string>
 </resources>

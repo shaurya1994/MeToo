@@ -1,6 +1,7 @@
 package com.example.shauryatrivedi.metoo.Activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,15 +13,24 @@ import com.example.shauryatrivedi.metoo.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT =2000;
+    private static int SPLASH_TIME_OUT =3000;
     private ProgressBar progressbar;
     private int prgrsStatus = 0;
     Handler hd = new Handler();
+
+    private  TextView message,meToo;
+    Typeface fontMsg,fontmeToo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        fontMsg = Typeface.createFromAsset(getAssets(),"fonts/message.ttf");
+        fontmeToo = Typeface.createFromAsset(getAssets(),"fonts/title.ttf");
+        message = (TextView)findViewById(R.id.message);
+        message.setTypeface(fontMsg);
+        meToo = (TextView)findViewById(R.id.meToo);
+        meToo.setTypeface(fontmeToo);
         progressbar = (ProgressBar)findViewById(R.id.prgrsBar);
 
         hd.postDelayed(new Runnable() {
