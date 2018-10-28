@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @GET("sexual_harassment_law")
-    Call<List<TweetList>> get_tweet(@Query("id") String id,@Query("img") String img);
+    Call<List<TweetList>> get_tweet();
 
     @GET("twitter_feeds?type=MeToo&page=1")
     Call<MainPojo> get_dat(@Query("type") String type, @Query("page") String page);
