@@ -49,7 +49,7 @@ public class LawActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         final ApiInterface api = ApiClient.getClient().create(ApiInterface.class);
-        
+
         Call<List<TweetList>> call = api.get_tweet("1","http:\\/\\/mapi.trycatchtech.com\\/uploads\\/twitter\\/15397696630.jpg");
 
         call.enqueue(new Callback<List<TweetList>>() {
