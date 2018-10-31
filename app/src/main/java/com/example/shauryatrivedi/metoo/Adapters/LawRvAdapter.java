@@ -15,8 +15,8 @@ import com.example.shauryatrivedi.metoo.Retrofit.TweetList;
 import java.util.List;
 
 public class LawRvAdapter extends RecyclerView.Adapter<LawRvAdapter.myViewHolder> {
-   private Context context;
-   private List<TweetList> list;
+    private Context context;
+    private List<TweetList> list;
 
     public LawRvAdapter(Context context, List<TweetList> list) {
         this.context = context;
@@ -26,17 +26,15 @@ public class LawRvAdapter extends RecyclerView.Adapter<LawRvAdapter.myViewHolder
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-       View v= LayoutInflater.from(context).inflate(R.layout.law_card,viewGroup,false);
-
-       return new myViewHolder(v);
+        View v= LayoutInflater.from(context).inflate(R.layout.law_card,viewGroup,false);
+        return new myViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int i) {
 
-        TweetList info=list.get(i);
-        String imageurl=info.getImage();
-
+        TweetList info = list.get(i);
+        String imageurl = info.getImage();
         Glide.with(context).load(imageurl).into(holder.lawimg);
     }
 
@@ -44,10 +42,11 @@ public class LawRvAdapter extends RecyclerView.Adapter<LawRvAdapter.myViewHolder
     public int getItemCount() {
         return list.size();
     }
-    class myViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView lawimg;
-        public myViewHolder(@NonNull View itemView) {
+    public class myViewHolder extends RecyclerView.ViewHolder {
+        private ImageView lawimg;
+
+        public myViewHolder(View itemView) {
             super(itemView);
 
             lawimg=(ImageView)itemView.findViewById(R.id.law_img);

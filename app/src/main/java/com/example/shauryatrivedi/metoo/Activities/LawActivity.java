@@ -49,7 +49,8 @@ public class LawActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         final ApiInterface api = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<TweetList>> call = api.get_tweet();
+
+        Call<List<TweetList>> call = api.get_tweet("1","http:\\/\\/mapi.trycatchtech.com\\/uploads\\/twitter\\/15397696630.jpg");
 
         call.enqueue(new Callback<List<TweetList>>() {
             @Override
@@ -63,7 +64,7 @@ public class LawActivity extends AppCompatActivity {
                     Log.d(TAG,"Number of images recieved: "+ lawList.size());
                 }
 
-               lawRvAdapter=new LawRvAdapter(LawActivity.this,lawList);
+                lawRvAdapter=new LawRvAdapter(LawActivity.this,lawList);
                 LinearLayoutManager linearLayoutManager=new LinearLayoutManager(LawActivity.this);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(lawRvAdapter);
@@ -79,34 +80,8 @@ public class LawActivity extends AppCompatActivity {
 
             }
         });
-//
-//                        @Override
-//            public void onResponse(Call<List<TweetList>> call, Response<List<TweetList>> response) {
-//
-//                if (pDialogue.isShowing())
-//                    pDialogue.dismiss();
-//
-//                lawList= response.body();
-//
-//                lawRvAdapter=new LawRvAdapter(LawActivity.this,lawList);
-//                LinearLayoutManager linearLayoutManager =new LinearLayoutManager(LawActivity.this);
-//                recyclerView.setLayoutManager(linearLayoutManager);
-//                recyclerView.setAdapter(lawRvAdapter);
-//                lawRvAdapter.notifyDataSetChanged();
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<TweetList>> call, Throwable t) {
-//
-//            }
-//        });
         showProgDiag();
     }
-
 
     private void showProgDiag() {
         pDialogue = new ProgressDialog(LawActivity.this);

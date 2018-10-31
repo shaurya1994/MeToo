@@ -1,5 +1,6 @@
 package com.example.shauryatrivedi.metoo.Activities;
 
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,12 +47,10 @@ public class Twitter extends AppCompatActivity {
                 MainPojo pojo = response.body();
                 data = pojo.getData();
                 tweets1.setAdapter(new TweetRvAdapter(Twitter.this,data));
-                //New push
             }
 
             @Override
             public void onFailure(Call<MainPojo> call, Throwable t) {
-
                 Log.e(TAG, t.toString());
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
