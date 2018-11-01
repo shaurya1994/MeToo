@@ -4,18 +4,37 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.shauryatrivedi.metoo.Activities.MainActivity;
+import com.example.shauryatrivedi.metoo.Activities.Twitter;
+import com.example.shauryatrivedi.metoo.Adapters.TweetRvAdapter;
+import com.example.shauryatrivedi.metoo.Interface.ApiInterface;
 import com.example.shauryatrivedi.metoo.R;
+import com.example.shauryatrivedi.metoo.Retrofit.ApiClient;
+import com.example.shauryatrivedi.metoo.Retrofit.MainPojo;
+import com.example.shauryatrivedi.metoo.Retrofit.data;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.support.constraint.Constraints.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MeToo.OnFragmentInteractionListener} interface
+ * {@link MeTooIn.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MeToo#newInstance} factory method to
+ * Use the {@link MeTooIn#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class MeToo extends Fragment {
@@ -27,6 +46,11 @@ public class MeToo extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private SwipeRefreshLayout refreshLayout;
+    private List<com.example.shauryatrivedi.metoo.Retrofit.data> data;
+    private ListView tweets1;
+    private int refresh_count = 0;
 
     private OnFragmentInteractionListener mListener;
 
@@ -40,11 +64,11 @@ public class MeToo extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MeToo.
+     * @return A new instance of fragment MeTooIn.
      */
     // TODO: Rename and change types and number of parameters
-    public static MeToo newInstance(String param1, String param2) {
-        MeToo fragment = new MeToo();
+    public static MeTooIn newInstance(String param1, String param2) {
+        MeTooIn fragment = new MeTooIn();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +89,38 @@ public class MeToo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_me_too, container, false);
+        View view = inflater.inflate(R.layout.fragment_me_too, container, false);
+        tweets1 = (ListView)view.findViewById(R.id.frag_meToo);
+        refreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_layout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                
+            }
+        });
+        Getfeed();
+        return view;
+    }
+
+    private void Getfeed()
+    {
+        ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
+        Call<MainPojo> calll=api.get_dat("MeToo","1");
+
+        calll.enqueue(new Callback<MainPojo>() {
+            @Override
+            public void onResponse(Call<MainPojo> call, Response<MainPojo> response) {
+                MainPojo pojo = response.body();
+                data = pojo.getData();
+                tweets1.setAdapter(new TweetRvAdapter(getActivity(),data));
+            }
+
+            @Override
+            public void onFailure(Call<MainPojo> call, Throwable t) {
+                Log.e(TAG, t.toString());
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

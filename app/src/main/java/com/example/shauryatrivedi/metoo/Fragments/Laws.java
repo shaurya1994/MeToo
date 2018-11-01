@@ -1,14 +1,30 @@
 package com.example.shauryatrivedi.metoo.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.shauryatrivedi.metoo.Activities.LawActivity;
+import com.example.shauryatrivedi.metoo.Adapters.LawRvAdapter;
+import com.example.shauryatrivedi.metoo.Interface.ApiInterface;
 import com.example.shauryatrivedi.metoo.R;
+import com.example.shauryatrivedi.metoo.Retrofit.ApiClient;
+import com.example.shauryatrivedi.metoo.Retrofit.TweetList;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +43,15 @@ public class Laws extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private String laws, id;
+    private RecyclerView recyclerView;
+    private ProgressDialog pDialogue;
+
+    List<TweetList> lawList;
+
+    private LawRvAdapter lawRvAdapter;
+    private String TAG = LawActivity.class.getSimpleName();
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +90,51 @@ public class Laws extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_laws, container, false);
+        View view = inflater.inflate(R.layout.fragment_laws, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.fragLawRV);
+        recyclerView.setHasFixedSize(true);
+
+        final ApiInterface api = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<List<TweetList>> call = api.get_tweet("1","http:\\/\\/mapi.trycatchtech.com\\/uploads\\/twitter\\/15397696630.jpg");
+
+        call.enqueue(new Callback<List<TweetList>>() {
+            @Override
+            public void onResponse(Call<List<TweetList>> call, Response<List<TweetList>> response) {
+                if (pDialogue.isShowing())
+                    pDialogue.dismiss();
+
+                List<TweetList> lawList=response.body();
+                if(lawList!=null)
+                {
+                    Log.d(TAG,"Number of images recieved: "+ lawList.size());
+                }
+
+                lawRvAdapter=new LawRvAdapter(getContext(),lawList);
+                LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setAdapter(lawRvAdapter);
+                lawRvAdapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(), "IN RETROFIT FRAGMENT" , Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<TweetList>> call, Throwable t) {
+                Log.e(TAG, t.toString());
+                Toast.makeText(getActivity(),"NOT IN RETROFIT ACTIVITY",Toast.LENGTH_LONG).show();
+
+            }
+        });
+        showProgDiag();
+
+        return view;
+    }
+    private void showProgDiag() {
+        pDialogue = new ProgressDialog(getActivity());
+        pDialogue.setMessage("Loading photos");
+        pDialogue.setCancelable(true);
+        pDialogue.show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

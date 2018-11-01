@@ -4,11 +4,29 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.shauryatrivedi.metoo.Activities.MainActivity;
+import com.example.shauryatrivedi.metoo.Activities.Twitter;
+import com.example.shauryatrivedi.metoo.Adapters.TweetRvAdapter;
+import com.example.shauryatrivedi.metoo.Interface.ApiInterface;
 import com.example.shauryatrivedi.metoo.R;
+import com.example.shauryatrivedi.metoo.Retrofit.ApiClient;
+import com.example.shauryatrivedi.metoo.Retrofit.MainPojo;
+import com.example.shauryatrivedi.metoo.Retrofit.data;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.support.constraint.Constraints.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +45,9 @@ public class MeTooIn extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private List<com.example.shauryatrivedi.metoo.Retrofit.data> data;
+    ListView tweets1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +86,31 @@ public class MeTooIn extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_me_too_in, container, false);
+        View view = inflater.inflate(R.layout.fragment_me_too_in, container, false);
+        tweets1 = (ListView)view.findViewById(R.id.frag_meTooIn);
+        Getfeed();
+        return view;
+    }
+
+    private void Getfeed()
+    {
+        ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
+        Call<MainPojo> calll=api.get_dat("MeTooIndia","1");
+
+        calll.enqueue(new Callback<MainPojo>() {
+            @Override
+            public void onResponse(Call<MainPojo> call, Response<MainPojo> response) {
+                MainPojo pojo = response.body();
+                data = pojo.getData();
+                tweets1.setAdapter(new TweetRvAdapter(getActivity(),data));
+            }
+
+            @Override
+            public void onFailure(Call<MainPojo> call, Throwable t) {
+                Log.e(TAG, t.toString());
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
