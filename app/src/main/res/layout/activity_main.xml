@@ -7,83 +7,39 @@
     android:background="@drawable/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Activities.MainActivity">
-
-    <!--<Button-->
-        <!--android:id="@+id/btnLaws"-->
-        <!--android:layout_width="99dp"-->
-        <!--android:layout_height="98dp"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-
-        <!--android:layout_marginStart="45dp"-->
-        <!--android:layout_marginLeft="45dp"-->
-        <!--android:layout_marginTop="56dp"-->
-        <!--android:layout_marginEnd="240dp"-->
-        <!--android:layout_marginRight="240dp"-->
-        <!--android:layout_marginBottom="213dp"-->
-        <!--android:background="@drawable/glass"-->
-        <!--android:text="Laws"-->
-        <!--android:textColor="#ec3fde"-->
-        <!--android:textSize="30dp"-->
-        <!--android:textStyle="bold" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/btnMeToo"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_marginLeft="196dp"-->
-        <!--android:layout_marginEnd="86dp"-->
-        <!--android:layout_marginRight="86dp"-->
-        <!--android:layout_marginBottom="36dp"-->
-        <!--android:background="@drawable/glass"-->
-        <!--android:text="#MeToo"-->
-        <!--android:textColor="#ec3fde"-->
-        <!--android:textSize="25dp"-->
-        <!--android:textStyle="bold" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/btnMeTooIndia"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginStart="146dp"-->
-        <!--android:layout_marginLeft="146dp"-->
-        <!--android:layout_marginEnd="52dp"-->
-        <!--android:layout_marginRight="52dp"-->
-        <!--android:layout_marginBottom="344dp"-->
-        <!--android:background="@drawable/glass"-->
-        <!--android:text="#MeTooIndia"-->
-        <!--android:textColor="#ec3fde"-->
-        <!--android:textSize="25dp"-->
-        <!--android:textStyle="bold" />-->
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="69dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/vwPgr"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="498dp"
-        android:background="@drawable/glass">
-    </android.support.design.widget.TabLayout>
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/glass"
+        app:tabTextColor="#efd024"
+        app:tabTextAppearance="@style/TabTextSize"></android.support.design.widget.TabLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vwPgr"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tab_layout">
-    </android.support.v4.view.ViewPager>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"></android.support.v4.view.ViewPager>
 </RelativeLayout>

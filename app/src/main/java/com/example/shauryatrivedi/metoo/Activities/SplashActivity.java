@@ -14,12 +14,11 @@ import com.example.shauryatrivedi.metoo.R;
 public class SplashActivity extends AppCompatActivity {
 
     private static int SPLASH_TIME_OUT =3000;
-    private ProgressBar progressbar;
     private int prgrsStatus = 0;
     Handler hd = new Handler();
 
     private  TextView message,meToo;
-    Typeface fontMsg,fontmeToo;
+    private Typeface fontMsg,fontmeToo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +30,6 @@ public class SplashActivity extends AppCompatActivity {
         message.setTypeface(fontMsg);
         meToo = (TextView)findViewById(R.id.meToo);
         meToo.setTypeface(fontmeToo);
-        progressbar = (ProgressBar)findViewById(R.id.prgrsBar);
 
         hd.postDelayed(new Runnable() {
             @Override
@@ -51,7 +49,6 @@ public class SplashActivity extends AppCompatActivity {
                     hd.post(new Runnable() {
                         @Override
                         public void run() {
-                            progressbar.setProgress(prgrsStatus);
                         }
                     });
                 }
