@@ -13,33 +13,26 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="134dp"
         android:layout_below="@+id/vwPgr"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="-1dp"
         android:background="@drawable/glass"
-        app:tabTextColor="#efd024"
-        app:tabTextAppearance="@style/TabTextSize"></android.support.design.widget.TabLayout>
+        app:tabTextAppearance="@style/TabTextSize"
+        app:tabTextColor="#efd024"></android.support.design.widget.TabLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vwPgr"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="516dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
         android:layout_marginRight="0dp"></android.support.v4.view.ViewPager>
 </RelativeLayout>
