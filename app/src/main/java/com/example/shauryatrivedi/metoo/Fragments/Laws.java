@@ -96,7 +96,7 @@ public class Laws extends Fragment {
 
         final ApiInterface api = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<List<TweetList>> call = api.get_tweet("1","http:\\/\\/mapi.trycatchtech.com\\/uploads\\/twitter\\/15397696630.jpg");
+        Call<List<TweetList>> call = api.get_tweet();
 
         call.enqueue(new Callback<List<TweetList>>() {
             @Override

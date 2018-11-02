@@ -3,12 +3,15 @@ package com.example.shauryatrivedi.metoo.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +24,8 @@ import com.example.shauryatrivedi.metoo.Retrofit.ApiClient;
 import com.example.shauryatrivedi.metoo.Retrofit.MainPojo;
 import com.example.shauryatrivedi.metoo.Retrofit.data;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,6 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.support.constraint.Constraints.TAG;
+import static com.example.shauryatrivedi.metoo.R.layout.footer_view;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,6 +57,10 @@ public class MeToo extends Fragment {
     private List<com.example.shauryatrivedi.metoo.Retrofit.data> data;
     private ListView tweets1;
     private int refresh_count = 0;
+    String page1="1";
+    public Handler mhandler;
+    public View ftview;
+    public boolean isLoading = false;
 
     private OnFragmentInteractionListener mListener;
 
@@ -89,30 +99,45 @@ public class MeToo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_me_too, container, false);
+        final View view = inflater.inflate(R.layout.fragment_me_too, container, false);
         tweets1 = (ListView)view.findViewById(R.id.frag_meToo);
-        refreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_layout);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                
-            }
-        });
+        LayoutInflater li = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ftview = li.inflate(R.layout.footer_view, null);
         Getfeed();
         return view;
+    }
+    public class MyHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    //Add loading view during search processing
+                    tweets1.addFooterView(ftview);
+                    break;
+                case 1:
+                    //Update data adapter and UI
+                    TweetRvAdapter.add
+
+            }
+        }
     }
 
     private void Getfeed()
     {
+        if(refresh_count>0)
+        {
+            int value=Integer.parseInt(page1)+1;
+            page1=Integer.toString(value);
+        }
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-        Call<MainPojo> calll=api.get_dat("MeToo","1");
+        Call<MainPojo> calll=api.get_dat("MeToo",page1);
 
         calll.enqueue(new Callback<MainPojo>() {
             @Override
             public void onResponse(Call<MainPojo> call, Response<MainPojo> response) {
-                MainPojo pojo = response.body();
-                data = pojo.getData();
-                tweets1.setAdapter(new TweetRvAdapter(getActivity(),data));
+                    MainPojo pojo = response.body();
+                    data = pojo.getData();
+                    tweets1.setAdapter(new TweetRvAdapter(getActivity(), data));
             }
 
             @Override

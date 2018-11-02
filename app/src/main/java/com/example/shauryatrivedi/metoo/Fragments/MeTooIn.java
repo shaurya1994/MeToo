@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +47,11 @@ public class MeTooIn extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private SwipeRefreshLayout refreshLayout;
     private List<com.example.shauryatrivedi.metoo.Retrofit.data> data;
     ListView tweets1;
-
+    String page1="1";
+    int refresh=0;
     private OnFragmentInteractionListener mListener;
 
     public MeTooIn() {
@@ -88,18 +91,54 @@ public class MeTooIn extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_me_too_in, container, false);
         tweets1 = (ListView)view.findViewById(R.id.frag_meTooIn);
+        refreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_layout_1);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+        });
         Getfeed();
         return view;
     }
 
     private void Getfeed()
     {
+//        if (response.length() > 0) {
+//
+//            // looping through json and adding to movies list
+//            for (int i = 0; i < response.length(); i++) {
+//                try {
+//                    JSONObject movieObj = response.getJSONObject(i);
+//
+//                    int rank = movieObj.getInt("rank");
+//                    String title = movieObj.getString("title");
+//
+//                    Movie m = new Movie(rank, title);
+//
+//                    movieList.add(0, m);
+//
+//                    // updating offset value to highest value
+//                    if (rank >= offSet)
+//                        offSet = rank;
+//
+//                } catch (JSONException e) {
+//                    Log.e(TAG, "JSON Parsing error: " + e.getMessage());
+//                }
+//            }
+//
+//            adapter.notifyDataSetChanged();
+//        }
+
+         refreshLayout.setRefreshing(true);
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-        Call<MainPojo> calll=api.get_dat("MeTooIndia","1");
+        Call<MainPojo> calll=api.get_dat("MeTooIndia",page1);
 
         calll.enqueue(new Callback<MainPojo>() {
             @Override
             public void onResponse(Call<MainPojo> call, Response<MainPojo> response) {
+
+
                 MainPojo pojo = response.body();
                 data = pojo.getData();
                 tweets1.setAdapter(new TweetRvAdapter(getActivity(),data));

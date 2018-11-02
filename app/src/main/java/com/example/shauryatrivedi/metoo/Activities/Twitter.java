@@ -34,7 +34,7 @@ public class Twitter extends AppCompatActivity {
         setContentView(R.layout.activity_twitter);
         tweets1 = (ListView)findViewById(R.id.tweet_list);
         type = getIntent().getStringExtra("Type");
-        //page=1
+        //int page=0;
         Getfeed();
     }
 

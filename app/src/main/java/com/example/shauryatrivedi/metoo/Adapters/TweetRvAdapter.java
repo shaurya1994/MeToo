@@ -25,6 +25,10 @@ public class TweetRvAdapter extends BaseAdapter{
         layoutInflater=(LayoutInflater.from(context));
     }
 
+//    public void addListItemToAdapter(List<data> list){
+//        data.addAll(list);
+//        this.notifyDataSetChanged();
+//    }
     @Override
     public int getCount() {
         return data.size();
