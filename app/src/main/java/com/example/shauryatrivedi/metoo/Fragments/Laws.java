@@ -2,6 +2,8 @@ package com.example.shauryatrivedi.metoo.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -90,6 +92,7 @@ public class Laws extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_laws, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.fragLawRV);
         recyclerView.setHasFixedSize(true);
@@ -126,15 +129,23 @@ public class Laws extends Fragment {
 
             }
         });
+
         showProgDiag();
 
         return view;
     }
+
     private void showProgDiag() {
         pDialogue = new ProgressDialog(getActivity());
         pDialogue.setMessage("Loading photos");
         pDialogue.setCancelable(true);
         pDialogue.show();
+    }
+    public static boolean isNetworkAvailable(Context context ){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnected();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

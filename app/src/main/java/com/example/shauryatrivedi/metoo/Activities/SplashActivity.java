@@ -1,5 +1,6 @@
 package com.example.shauryatrivedi.metoo.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Handler;

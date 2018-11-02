@@ -12,7 +12,7 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="ActionBarBackground" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="ActionBarBackground" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@drawable/glass</item>
     </style>
 </resources>
