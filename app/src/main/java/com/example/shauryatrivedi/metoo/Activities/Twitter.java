@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,12 +34,14 @@ public class Twitter extends AppCompatActivity {
         setContentView(R.layout.activity_twitter);
         tweets1 = (ListView)findViewById(R.id.tweet_list);
         type = getIntent().getStringExtra("Type");
+        //page=1
         Getfeed();
     }
 
     private void Getfeed()
     {
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
+      //Call<MainPojo> calll=api.get_dat(type,page+1);
         Call<MainPojo> calll=api.get_dat(type,"1");
 
         calll.enqueue(new Callback<MainPojo>() {
