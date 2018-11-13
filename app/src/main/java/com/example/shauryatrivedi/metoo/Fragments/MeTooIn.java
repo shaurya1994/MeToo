@@ -1,7 +1,9 @@
 package com.example.shauryatrivedi.metoo.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,17 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.shauryatrivedi.metoo.Activities.MainActivity;
-import com.example.shauryatrivedi.metoo.Activities.Twitter;
 import com.example.shauryatrivedi.metoo.Adapters.TweetRvAdapter;
 import com.example.shauryatrivedi.metoo.Interface.ApiInterface;
 import com.example.shauryatrivedi.metoo.R;
 import com.example.shauryatrivedi.metoo.Retrofit.ApiClient;
 import com.example.shauryatrivedi.metoo.Retrofit.MainPojo;
-import com.example.shauryatrivedi.metoo.Retrofit.data;
 
 import java.util.List;
 
@@ -51,7 +51,8 @@ public class MeTooIn extends Fragment {
     private List<com.example.shauryatrivedi.metoo.Retrofit.data> data;
     ListView tweets1;
     String page1="1";
-    int refresh=0;
+    ProgressDialog pDialog;
+    TweetRvAdapter obj;
     private OnFragmentInteractionListener mListener;
 
     public MeTooIn() {
@@ -91,57 +92,84 @@ public class MeTooIn extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_me_too_in, container, false);
         tweets1 = (ListView)view.findViewById(R.id.frag_meTooIn);
-        refreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_layout_1);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        Button loadMore = new Button(getActivity());
+        loadMore.setText("Load More");
+        loadMore.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-
+            public void onClick(View v) {
+                new loadMoreListView().execute();
             }
         });
+        tweets1.addFooterView(loadMore);
         Getfeed();
         return view;
     }
 
+    private class loadMoreListView extends AsyncTask<Void, Void, List<com.example.shauryatrivedi.metoo.Retrofit.data>> {
+        @Override
+        protected void onPreExecute() {
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Please wait..");
+            pDialog.setIndeterminate(true);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        protected List<com.example.shauryatrivedi.metoo.Retrofit.data> doInBackground(Void... unused) {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    // increment current page
+                    page1+= 1;
+
+                    // Next page request
+                    ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
+                    Call<MainPojo> calll=api.get_dat("MeTooIndia",page1);
+
+                    calll.enqueue(new Callback<MainPojo>() {
+                        @Override
+                        public void onResponse(Call<MainPojo> call, Response<MainPojo> response) {
+                            MainPojo pojo = response.body();
+                            data = pojo.getData();
+                            tweets1.setAdapter(new TweetRvAdapter(getActivity(), data));
+                        }
+
+                        @Override
+                        public void onFailure(Call<MainPojo> call, Throwable t) {
+                            Log.e(TAG, t.toString());
+                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // get listview current position - used to maintain scroll position
+                    int currentPosition = tweets1.getFirstVisiblePosition();
+
+                    // Appending new data to menuItems ArrayList
+                    obj = new TweetRvAdapter(getActivity(), data);
+
+                    // Setting new scroll position
+                    tweets1.setSelectionFromTop(currentPosition + 1, 0);
+                }
+            });
+            return (data);
+        }
+
+        protected void onPostExecute(List<com.example.shauryatrivedi.metoo.Retrofit.data> unused) {
+            // closing progress dialog
+            pDialog.dismiss();
+        }
+    }
+
     private void Getfeed()
     {
-//        if (response.length() > 0) {
-//
-//            // looping through json and adding to movies list
-//            for (int i = 0; i < response.length(); i++) {
-//                try {
-//                    JSONObject movieObj = response.getJSONObject(i);
-//
-//                    int rank = movieObj.getInt("rank");
-//                    String title = movieObj.getString("title");
-//
-//                    Movie m = new Movie(rank, title);
-//
-//                    movieList.add(0, m);
-//
-//                    // updating offset value to highest value
-//                    if (rank >= offSet)
-//                        offSet = rank;
-//
-//                } catch (JSONException e) {
-//                    Log.e(TAG, "JSON Parsing error: " + e.getMessage());
-//                }
-//            }
-//
-//            adapter.notifyDataSetChanged();
-//        }
-
-         refreshLayout.setRefreshing(true);
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
         Call<MainPojo> calll=api.get_dat("MeTooIndia",page1);
 
         calll.enqueue(new Callback<MainPojo>() {
             @Override
             public void onResponse(Call<MainPojo> call, Response<MainPojo> response) {
-
-
                 MainPojo pojo = response.body();
                 data = pojo.getData();
-                tweets1.setAdapter(new TweetRvAdapter(getActivity(),data));
+                tweets1.setAdapter(new TweetRvAdapter(getActivity(), data));
             }
 
             @Override

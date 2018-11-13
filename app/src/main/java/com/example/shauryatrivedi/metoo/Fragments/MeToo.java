@@ -26,6 +26,8 @@ import com.example.shauryatrivedi.metoo.Retrofit.data;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -56,7 +58,7 @@ public class MeToo extends Fragment {
     private SwipeRefreshLayout refreshLayout;
     private List<com.example.shauryatrivedi.metoo.Retrofit.data> data;
     private ListView tweets1;
-    private int refresh_count = 0;
+    private TweetRvAdapter obj;
     String page1="1";
     public Handler mhandler;
     public View ftview;
@@ -99,36 +101,67 @@ public class MeToo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_me_too, container, false);
+        View view = inflater.inflate(R.layout.fragment_me_too, container, false);
         tweets1 = (ListView)view.findViewById(R.id.frag_meToo);
         LayoutInflater li = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ftview = li.inflate(R.layout.footer_view, null);
+        mhandler = new Handler();
+        data = new ArrayList<>();
         Getfeed();
         return view;
     }
-    public class MyHandler extends Handler{
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 0:
-                    //Add loading view during search processing
-                    tweets1.addFooterView(ftview);
-                    break;
-                case 1:
-                    //Update data adapter and UI
-                    TweetRvAdapter.add
 
-            }
-        }
-    }
+//    public class MyHandler extends Handler{
+//        @Override
+//        public void handleMessage(Message msg) {
+//            switch (msg.what){
+//                case 0:
+//                    //Add loading view during search processing
+//                    tweets1.addFooterView(ftview);
+//                    break;
+//                case 1:
+//                    //Update data adapter and UI
+//                    obj.addListItemToAdapter((ArrayList<data>)msg.obj);
+//                    //Remove loading view after update listView
+//                    tweets1.removeFooterView(ftview);
+//                    isLoading = false;
+//                    break;
+//                    default:
+//                        break;
+//            }
+//        }
+//    }
+
+//    private ArrayList<data> getMoreData(){
+//        ArrayList<data>lst = new ArrayList<>();
+//        //Add loop for incrementing api
+//        int value=Integer.parseInt(page1)+1;
+//        page1=Integer.toString(value);
+//        return lst;
+//    }
+
+//    public class ThreadGetMoreData extends Thread{
+//        @Override
+//        public void run() {
+//            //Add footer view after get data
+//            mhandler.sendEmptyMessage(0);
+//            //Search more data
+//            ArrayList<data>lstResult = getMoreData();
+//            //Delay Line
+//            try {
+//                Thread.sleep(3000);
+//            }catch (InterruptedException e){
+//                e.printStackTrace();
+//            }
+//            //Send result to handle
+//            Message msg = mhandler.obtainMessage(1,lstResult);
+//            mhandler.sendMessage(msg);
+//
+//        }
+//    }
 
     private void Getfeed()
     {
-        if(refresh_count>0)
-        {
-            int value=Integer.parseInt(page1)+1;
-            page1=Integer.toString(value);
-        }
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
         Call<MainPojo> calll=api.get_dat("MeToo",page1);
 
