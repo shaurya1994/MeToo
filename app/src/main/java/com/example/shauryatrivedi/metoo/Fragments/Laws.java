@@ -2,6 +2,11 @@ package com.example.shauryatrivedi.metoo.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -13,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.shauryatrivedi.metoo.Activities.LawActivity;
@@ -22,6 +29,8 @@ import com.example.shauryatrivedi.metoo.R;
 import com.example.shauryatrivedi.metoo.Retrofit.ApiClient;
 import com.example.shauryatrivedi.metoo.Retrofit.TweetList;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,11 +54,11 @@ public class Laws extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private ImageView imageview;
     private String laws, id;
     private RecyclerView recyclerView;
     private ProgressDialog pDialogue;
-
+    private Button share;
     List<TweetList> lawList;
 
     private LawRvAdapter lawRvAdapter;
@@ -92,6 +101,14 @@ public class Laws extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View v=inflater.inflate(R.layout.activity_law,container,false);
+        share=(Button)v.findViewById(R.id.btnshare);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startShare();
+            }
+        });
 
         View view = inflater.inflate(R.layout.fragment_laws, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.fragLawRV);
@@ -177,7 +194,7 @@ public class Laws extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     *      * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -186,4 +203,40 @@ public class Laws extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    public void startShare()
+    {
+        Bitmap bitmap=getBitmaoFromView(imageview);
+        try
+        {
+            File file = new File(this.getActivity().getExternalCacheDir(),"logicchip.png");
+            FileOutputStream fout=new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,fout);
+            fout.flush();
+            fout.close();
+            file.setReadable(true,false);
+            final Intent intent=new Intent(Intent.ACTION_SEND);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
+            intent.setType("image/png");
+            startActivity(Intent.createChooser(intent,"SHARE IMAGE VIA "));
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+  private Bitmap getBitmaoFromView(View view){
+        Bitmap returnedBitmap=Bitmap.createBitmap(view.getWidth(),view.getHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas =new Canvas(returnedBitmap);
+      Drawable bgDrawable=view.getBackground();
+        if(bgDrawable!=null){
+            bgDrawable.draw(canvas);
+        }
+        else{
+            canvas.drawColor(Color.WHITE);
+        }
+        view.draw(canvas);
+        return  returnedBitmap;
+  }
 }
