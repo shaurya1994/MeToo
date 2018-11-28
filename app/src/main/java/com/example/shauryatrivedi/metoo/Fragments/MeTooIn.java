@@ -3,9 +3,10 @@ package com.example.shauryatrivedi.metoo.Fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,14 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shauryatrivedi.metoo.Adapters.TweetRvAdapter;
 import com.example.shauryatrivedi.metoo.Interface.ApiInterface;
 import com.example.shauryatrivedi.metoo.R;
 import com.example.shauryatrivedi.metoo.Retrofit.ApiClient;
-import com.example.shauryatrivedi.metoo.Retrofit.MainPojo;
+import com.example.shauryatrivedi.metoo.Retrofit.JSON;
+import com.example.shauryatrivedi.metoo.Retrofit.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.support.constraint.Constraints.TAG;
+import static com.example.shauryatrivedi.metoo.Fragments.Laws.isNetworkAvailable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,12 +52,12 @@ public class MeTooIn extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private SwipeRefreshLayout refreshLayout;
-    private List<com.example.shauryatrivedi.metoo.Retrofit.data> data;
-    ListView tweets1;
-    String page1="1";
+    private data data;
+    private List<JSON> json;
+    private ListView tweets1;
+    String page = "1";
     ProgressDialog pDialog;
-    TweetRvAdapter obj;
+
     private OnFragmentInteractionListener mListener;
 
     public MeTooIn() {
@@ -92,91 +97,95 @@ public class MeTooIn extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_me_too_in, container, false);
         tweets1 = (ListView)view.findViewById(R.id.frag_meTooIn);
+
         Button loadMore = new Button(getActivity());
         loadMore.setText("Load More");
         loadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new loadMoreListView().execute();
+                 loadMoreListView();
             }
         });
         tweets1.addFooterView(loadMore);
-        Getfeed();
+
+        if(isNetworkAvailable(getContext())){
+            showProgDiag();
+            Getfeed();
+            Snackbar snackbar = Snackbar.make(view, "Connected", Snackbar.LENGTH_SHORT);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            snackbar.show();}
+        else {
+            Snackbar snackbar = Snackbar.make(view, "Not Connected", Snackbar.LENGTH_SHORT);
+            View sbView = snackbar.getView();
+            sbView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            snackbar.show();
+        }
         return view;
     }
 
-    private class loadMoreListView extends AsyncTask<Void, Void, List<com.example.shauryatrivedi.metoo.Retrofit.data>> {
-        @Override
-        protected void onPreExecute() {
-            pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage("Please wait..");
-            pDialog.setIndeterminate(true);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        protected List<com.example.shauryatrivedi.metoo.Retrofit.data> doInBackground(Void... unused) {
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    // increment current page
-                    page1+= 1;
-
-                    // Next page request
-                    ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-                    Call<MainPojo> calll=api.get_dat("MeTooIndia",page1);
-
-                    calll.enqueue(new Callback<MainPojo>() {
-                        @Override
-                        public void onResponse(Call<MainPojo> call, Response<MainPojo> response) {
-                            MainPojo pojo = response.body();
-                            data = pojo.getData();
-                            tweets1.setAdapter(new TweetRvAdapter(getActivity(), data));
-                        }
-
-                        @Override
-                        public void onFailure(Call<MainPojo> call, Throwable t) {
-                            Log.e(TAG, t.toString());
-                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    // get listview current position - used to maintain scroll position
-                    int currentPosition = tweets1.getFirstVisiblePosition();
-
-                    // Appending new data to menuItems ArrayList
-                    obj = new TweetRvAdapter(getActivity(), data);
-
-                    // Setting new scroll position
-                    tweets1.setSelectionFromTop(currentPosition + 1, 0);
-                }
-            });
-            return (data);
-        }
-
-        protected void onPostExecute(List<com.example.shauryatrivedi.metoo.Retrofit.data> unused) {
-            // closing progress dialog
-            pDialog.dismiss();
-        }
+    private void showProgDiag(){
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Please wait..");
+        pDialog.setIndeterminate(true);
+        pDialog.setCancelable(true);
+        pDialog.show();
     }
 
     private void Getfeed()
     {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-        Call<MainPojo> calll=api.get_dat("MeTooIndia",page1);
+        Call<data> call=api.get_data("MeTooIndia",page);
 
-        calll.enqueue(new Callback<MainPojo>() {
+        call.enqueue(new Callback<data>() {
             @Override
-            public void onResponse(Call<MainPojo> call, Response<MainPojo> response) {
-                MainPojo pojo = response.body();
-                data = pojo.getData();
-                tweets1.setAdapter(new TweetRvAdapter(getActivity(), data));
-            }
+            public void onResponse(Call<data> call, Response<data> response) {
+                data = response.body();
+                json = data.getData();
+
+                tweets1.setAdapter(new TweetRvAdapter(getActivity(), json)); }
 
             @Override
-            public void onFailure(Call<MainPojo> call, Throwable t) {
+            public void onFailure(Call<data> call, Throwable t) {
                 Log.e(TAG, t.toString());
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+
+    private void loadMoreListView() {
+
+        // increment current page
+        page += 1;
+
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+
+        // Next page request
+        ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
+        Call<data> call=api.get_data("MeTooIndia",page);
+
+        call.enqueue(new Callback<data>()
+        {
+            @Override
+            public void onResponse (Call <data> call, Response <data> response){
+                data = response.body();
+                json = data.getData();
+
+                tweets1.setAdapter(new TweetRvAdapter(getActivity(), json)); }
+
+            @Override
+            public void onFailure (Call <data> call, Throwable t){
+                Log.e(TAG, t.toString());
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show(); }
+
         });
     }
 

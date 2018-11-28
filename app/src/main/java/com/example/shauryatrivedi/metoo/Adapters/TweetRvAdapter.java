@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.shauryatrivedi.metoo.R;
+import com.example.shauryatrivedi.metoo.Retrofit.JSON;
 import com.example.shauryatrivedi.metoo.Retrofit.data;
 
 import java.util.List;
@@ -16,25 +17,18 @@ import java.util.List;
 public class TweetRvAdapter extends BaseAdapter{
 
     private Context context;
-    private List<data> data;
-    private static LayoutInflater layoutInflater = null;
+    private List<JSON> json;
+    private LayoutInflater layoutInflater;
 
-    public TweetRvAdapter(Context context, List<data> data) {
-        this.data = data;
+    public TweetRvAdapter(Context context, List<JSON> json) {
+        this.json = json;
         this.context = context;
         layoutInflater=(LayoutInflater.from(context));
     }
 
-    public void addListItemToAdapter(List<data> list){
-        //Add list to current array list of data
-        data.addAll(list);
-        //Notify UI
-        this.notifyDataSetChanged();
-    }
-
     @Override
     public int getCount() {
-        return data.size();
+        return json.size();
     }
 
     @Override
@@ -52,8 +46,8 @@ public class TweetRvAdapter extends BaseAdapter{
         convertView = layoutInflater.inflate(R.layout.tweet_cardvw,null);
         TextView scrnam= (TextView)convertView.findViewById(R.id.screen_name);
         TextView twtext = (TextView)convertView.findViewById(R.id.tweet_text);
-        TextView creat = (TextView)convertView.findViewById(R.id.created_on);
-        com.example.shauryatrivedi.metoo.Retrofit.data info = data.get(position);
+        TextView create = (TextView)convertView.findViewById(R.id.created_on);
+        JSON info = json.get(position);
         Typeface typeface = Typeface.createFromAsset(context.getAssets(),"fonts/tweet.ttf");
         twtext.setTypeface(typeface);
         scrnam.setTypeface(typeface);
@@ -62,7 +56,7 @@ public class TweetRvAdapter extends BaseAdapter{
         String created = info.getCreated_at();
         scrnam.setText("@"+screename);
         twtext.setText(tweetxt);
-        creat.setText(created);
+        create.setText(created);
         return convertView;
 
     }

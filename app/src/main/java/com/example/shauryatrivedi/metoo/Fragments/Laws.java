@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.shauryatrivedi.metoo.Activities.LawActivity;
 import com.example.shauryatrivedi.metoo.Adapters.LawRvAdapter;
 import com.example.shauryatrivedi.metoo.Interface.ApiInterface;
 import com.example.shauryatrivedi.metoo.R;
@@ -62,7 +61,7 @@ public class Laws extends Fragment {
     List<TweetList> lawList;
 
     private LawRvAdapter lawRvAdapter;
-    private String TAG = LawActivity.class.getSimpleName();
+    private String TAG = Laws.class.getSimpleName();
 
     private OnFragmentInteractionListener mListener;
 
@@ -100,16 +99,21 @@ public class Laws extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.activity_law,container,false);
-        share=(Button)v.findViewById(R.id.btnshare);
-        share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startShare();
-            }
-        });
 
+        pDialogue = new ProgressDialog(getActivity());
+        pDialogue.setMessage("Loading photos");
+        pDialogue.setCancelable(true);
+        pDialogue.show();
+
+        //        share=(Button)v.findViewById(R.id.btnshare);
+//        share.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startShare();
+//            }
+//        });
+
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_laws, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.fragLawRV);
         recyclerView.setHasFixedSize(true);
@@ -124,7 +128,7 @@ public class Laws extends Fragment {
                 if (pDialogue.isShowing())
                     pDialogue.dismiss();
 
-                List<TweetList> lawList=response.body();
+                lawList=response.body();
                 if(lawList!=null)
                 {
                     Log.d(TAG,"Number of images recieved: "+ lawList.size());
@@ -147,20 +151,11 @@ public class Laws extends Fragment {
             }
         });
 
-        showProgDiag();
-
         return view;
     }
 
-    private void showProgDiag() {
-        pDialogue = new ProgressDialog(getActivity());
-        pDialogue.setMessage("Loading photos");
-        pDialogue.setCancelable(true);
-        pDialogue.show();
-    }
     public static boolean isNetworkAvailable(Context context ){
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnected();
     }

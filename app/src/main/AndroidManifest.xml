@@ -21,8 +21,6 @@
             </intent-filter>
         </activity>
     <activity android:name=".Activities.MainActivity"/>
-        <activity android:name=".Activities.LawActivity" />
-        <activity android:name=".Activities.Twitter" ></activity>
     </application>
 
 </manifest>
