@@ -54,9 +54,10 @@ public class MeToo extends Fragment {
     private List<JSON> json;
     private ListView tweets1;
     private TweetRvAdapter tweetRvAdapter;
-    String page = "1";
-    ProgressDialog pDialog;
-
+    private String page = "1";
+    private int temp = Integer.parseInt(page);
+    private ProgressDialog proDlog;
+    private Button loadPrev, loadMore ;
     private OnFragmentInteractionListener mListener;
 
     public MeToo() {
@@ -97,8 +98,8 @@ public class MeToo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_me_too, container, false);
         tweets1 = (ListView)view.findViewById(R.id.frag_meToo);
 
-        Button loadMore = new Button(getActivity());
-        loadMore.setText("Load More");
+        loadMore = new Button(getActivity());
+        loadMore.setText("Load More Posts");
         loadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,20 +114,19 @@ public class MeToo extends Fragment {
     }
 
     private void showProgDiag(){
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Please wait..");
-        pDialog.setIndeterminate(true);
-        pDialog.setCancelable(true);
-        pDialog.show();
+        proDlog = new ProgressDialog(getContext());
+        proDlog.setMessage("Please wait..");
+        proDlog.setCancelable(true);
+        proDlog.show();
     }
 
     private void Getfeed()
     {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+        if (proDlog.isShowing()){
+            proDlog.dismiss();}
 
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-        Call<data> call=api.get_data("MeToo",page);
+        Call<data> call=api.get_data("MeTooIndia",page);
 
         call.enqueue(new Callback<data>() {
             @Override
@@ -137,7 +137,7 @@ public class MeToo extends Fragment {
                 tweetRvAdapter = new TweetRvAdapter(getActivity(), json);
                 tweets1.setAdapter(tweetRvAdapter);
 
-//                tweets1.setAdapter(new TweetRvAdapter(getActivity(), json));
+                tweets1.setAdapter(new TweetRvAdapter(getActivity(), json));
                 tweets1.deferNotifyDataSetChanged();
             }
 
@@ -149,34 +149,54 @@ public class MeToo extends Fragment {
         });
     }
 
-    private void loadMoreListView() {
+    private void loadPrevPost() {
 
+        showProgDiag();
         // increment current page
-        page += 1;
+        temp -= 1;
+        page = Integer.toString(temp);
 
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+        if (proDlog.isShowing())
+            proDlog.dismiss();
 
         // Next page request
-        ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-        Call<data> call=api.get_data("MeToo",page);
+        if (temp==1) {
+//            tweets1.removeHeaderView(loadPrev);
+//            loadPrev.setVisibility(View.INVISIBLE);
+            Toast.makeText(getContext(),"No Previous Posts",Toast.LENGTH_SHORT).show();
+        }else {
+            Getfeed();
+        }
+    }
 
-        call.enqueue(new Callback<data>()
-        {
-            @Override
-            public void onResponse (Call <data> call, Response <data> response){
-                data = response.body();
-                json = data.getData();
+    private void loadMoreListView() {
 
-//                tweets1.setAdapter(new TweetRvAdapter(getActivity(), json));
-            }
+        showProgDiag();
+        // increment current page
+        temp += 1;
+        page = Integer.toString(temp);
 
-            @Override
-            public void onFailure (Call <data> call, Throwable t){
-                Log.e(TAG, t.toString());
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show(); }
+        if (proDlog.isShowing())
+            proDlog.dismiss();
 
-        });
+        // Next page request
+        if (temp<7) {
+            Getfeed();
+        }else {
+            Toast.makeText(getContext(),"No More Posts",Toast.LENGTH_SHORT).show();
+        }
+
+        if (temp > 1){
+            loadPrev = new Button(getActivity());
+            loadPrev.setText("Load Previous Posts");
+            loadPrev.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loadPrevPost();
+                }
+            });
+            tweets1.addHeaderView(loadPrev);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

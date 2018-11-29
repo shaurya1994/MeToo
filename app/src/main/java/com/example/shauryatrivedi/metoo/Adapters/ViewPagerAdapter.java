@@ -22,15 +22,15 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         {
             case 0:
                 Laws lawTab = new Laws();
-                    return lawTab;
-                case 1:
-                    MeToo meTooTab = new MeToo();
-                    return meTooTab;
-                case 2:
-                    MeTooIn MeTooInTab = new MeTooIn();
-                    return MeTooInTab;
-                default:
-                    return null;
+                return lawTab;
+            case 1:
+                MeToo meTooTab = new MeToo();
+                return meTooTab;
+            case 2:
+                MeTooIn MeTooInTab = new MeTooIn();
+                return MeTooInTab;
+            default:
+                return null;
         }
     }
 

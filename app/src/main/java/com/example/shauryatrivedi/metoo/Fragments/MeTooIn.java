@@ -53,10 +53,11 @@ public class MeTooIn extends Fragment {
     private String mParam2;
 
     private data data;
-    private List<JSON> json;
+    private List<JSON> json = new ArrayList<>();
     private ListView tweets1;
     String page = "1";
-    ProgressDialog pDialog;
+    int temp = Integer.parseInt(page);
+    ProgressDialog proDlog;
 
     private OnFragmentInteractionListener mListener;
 
@@ -129,20 +130,19 @@ public class MeTooIn extends Fragment {
     }
 
     private void showProgDiag(){
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Please wait..");
-        pDialog.setIndeterminate(true);
-        pDialog.setCancelable(true);
-        pDialog.show();
+        proDlog = new ProgressDialog(getContext());
+        proDlog.setMessage("Please wait..");
+        proDlog.setCancelable(true);
+        proDlog.show();
     }
 
     private void Getfeed()
     {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+        if (proDlog.isShowing()){
+            proDlog.dismiss();}
 
         ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-        Call<data> call=api.get_data("MeTooIndia",page);
+        Call<data> call=api.get_data("MeToo",page);
 
         call.enqueue(new Callback<data>() {
             @Override
@@ -162,31 +162,19 @@ public class MeTooIn extends Fragment {
 
     private void loadMoreListView() {
 
-        // increment current page
-        page += 1;
+        showProgDiag();
+        // Increment current page
+        temp = temp+1;
+        page = Integer.toString(temp);
+        if (proDlog.isShowing())
+            proDlog.dismiss();
 
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-
-        // Next page request
-        ApiInterface api= ApiClient.getClient().create(ApiInterface.class);
-        Call<data> call=api.get_data("MeTooIndia",page);
-
-        call.enqueue(new Callback<data>()
-        {
-            @Override
-            public void onResponse (Call <data> call, Response <data> response){
-                data = response.body();
-                json = data.getData();
-
-                tweets1.setAdapter(new TweetRvAdapter(getActivity(), json)); }
-
-            @Override
-            public void onFailure (Call <data> call, Throwable t){
-                Log.e(TAG, t.toString());
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show(); }
-
-        });
+        if (temp<33) {
+            // Next page request
+           Getfeed();
+        }else {
+            Toast.makeText(getContext(),"No More Posts",Toast.LENGTH_SHORT).show();
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

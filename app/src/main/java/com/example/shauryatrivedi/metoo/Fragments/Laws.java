@@ -100,10 +100,7 @@ public class Laws extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        pDialogue = new ProgressDialog(getActivity());
-        pDialogue.setMessage("Loading photos");
-        pDialogue.setCancelable(true);
-        pDialogue.show();
+        showProgDiag();
 
         //        share=(Button)v.findViewById(R.id.btnshare);
 //        share.setOnClickListener(new View.OnClickListener() {
@@ -125,8 +122,8 @@ public class Laws extends Fragment {
         call.enqueue(new Callback<List<TweetList>>() {
             @Override
             public void onResponse(Call<List<TweetList>> call, Response<List<TweetList>> response) {
-                if (pDialogue.isShowing())
-                    pDialogue.dismiss();
+                if (pDialogue.isShowing()){
+                    pDialogue.dismiss();}
 
                 lawList=response.body();
                 if(lawList!=null)
@@ -139,19 +136,22 @@ public class Laws extends Fragment {
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(lawRvAdapter);
                 lawRvAdapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(), "IN RETROFIT FRAGMENT" , Toast.LENGTH_LONG).show();
-
             }
 
             @Override
             public void onFailure(Call<List<TweetList>> call, Throwable t) {
                 Log.e(TAG, t.toString());
-                Toast.makeText(getActivity(),"NOT IN RETROFIT ACTIVITY",Toast.LENGTH_LONG).show();
-
-            }
+                }
         });
 
         return view;
+    }
+
+    private void showProgDiag(){
+        pDialogue = new ProgressDialog(getContext());
+        pDialogue.setMessage("Loading photos");
+        pDialogue.setCancelable(true);
+        pDialogue.show();
     }
 
     public static boolean isNetworkAvailable(Context context ){
@@ -214,7 +214,6 @@ public class Laws extends Fragment {
             intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
             intent.setType("image/png");
             startActivity(Intent.createChooser(intent,"SHARE IMAGE VIA "));
-
 
         }catch (Exception e){
             e.printStackTrace();
