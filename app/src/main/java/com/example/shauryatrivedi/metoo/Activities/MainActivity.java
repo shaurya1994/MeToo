@@ -1,6 +1,5 @@
 package com.example.shauryatrivedi.metoo.Activities;
 
-import android.app.ActionBar;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
@@ -11,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.support.design.widget.TabLayout;
 import android.widget.TextView;
 import android.widget.Toast;

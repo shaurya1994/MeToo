@@ -2,7 +2,9 @@ package com.example.shauryatrivedi.metoo.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,15 +45,24 @@ public class LawRvAdapter extends RecyclerView.Adapter<LawRvAdapter.myViewHolder
         return list.size();
     }
 
-    public class myViewHolder extends RecyclerView.ViewHolder {
+    public static class myViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         private ImageView lawimg;
+        CardView cardView;
 
         public myViewHolder(View itemView) {
             super(itemView);
 
-            lawimg=(ImageView)itemView.findViewById(R.id.law_img);
+            lawimg = itemView.findViewById(R.id.law_img);
+            cardView = itemView.findViewById(R.id.clbCrdVw);
+            cardView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Spread the awareness");
+            menu.add(this.getAdapterPosition(),001,0,"Share");
+            menu.add(this.getAdapterPosition(),002,1,"Download");
         }
     }
-
 }
 

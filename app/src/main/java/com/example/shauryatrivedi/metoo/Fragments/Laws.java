@@ -11,11 +11,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -58,8 +62,7 @@ public class Laws extends Fragment {
     private RecyclerView recyclerView;
     private ProgressDialog pDialogue;
     private Button share;
-    List<TweetList> lawList;
-
+    private List<TweetList> lawList;
     private LawRvAdapter lawRvAdapter;
     private String TAG = Laws.class.getSimpleName();
 
@@ -101,14 +104,6 @@ public class Laws extends Fragment {
                              Bundle savedInstanceState) {
 
         showProgDiag();
-
-        //        share=(Button)v.findViewById(R.id.btnshare);
-//        share.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startShare();
-//            }
-//        });
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_laws, container, false);
@@ -152,6 +147,11 @@ public class Laws extends Fragment {
         pDialogue.setMessage("Loading photos");
         pDialogue.setCancelable(true);
         pDialogue.show();
+    }
+
+    public interface ItemLongClickListener {
+
+        void onItemLongClick(View v,int pos);
     }
 
     public static boolean isNetworkAvailable(Context context ){
@@ -198,6 +198,7 @@ public class Laws extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
     public void startShare()
     {
         Bitmap bitmap=getBitmaoFromView(imageview);
@@ -233,4 +234,23 @@ public class Laws extends Fragment {
         view.draw(canvas);
         return  returnedBitmap;
   }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case 001:
+                Toast.makeText(getContext(),"Share",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case 002:
+                
+                Toast.makeText(getContext(),"Download",Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return  super.onContextItemSelected(item);
+        }
+
+    }
+
 }
